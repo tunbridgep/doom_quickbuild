@@ -155,28 +155,13 @@ class Folder extends FilesystemObject
 			return null;
 	}
 
-	#returns a list of the folders that exist within this folder
-	public function GetFoldersInside()
+	public function GetSubPath(string $name)
 	{
-		if ($this->Exists())
-			return glob($this->path."*",GLOB_ONLYDIR);
-	}
-
-	#returns a list of the files (not folders) that exist within this folder
-	public function GetFilesInside()
-	{
-		if ($this->Exists())
-		{
-			$files = array();
-			foreach (glob($this->path."*") as $file)
-			{
-				if (!is_dir($file))
-				{
-					array_push($files,$file);
-				}
-			}
-			return $files;
-		}
+		if (substr($name,-1) == DIRECTORY_SEPARATOR)
+			$sub = new Folder($this->GetPath().DIRECTORY_SEPARATOR.$name);
+		else
+			$sub = new File($this->GetPath().DIRECTORY_SEPARATOR.$name);
+		return $sub;
 	}
 
 	public function CopyTo(Folder $dest)

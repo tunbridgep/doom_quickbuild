@@ -1,15 +1,9 @@
 <?php
 
 #include everything from the build folder
-foreach (glob("./build/*") as $include_file)
-{
-	$filename = basename($include_file);
-	if ($filename !== "basics.php" && $filename !== "make.php") #don't include ourselves
-	{
-		#echo $include_file.PHP_EOL;
-		require($include_file);
-	}
-}
+$includes = array_merge(glob("./build/core/*"),glob("./build/inputs/*"),glob("./build/steps/*"),glob("./build/outputs/*"));
+foreach ($includes as $include_file)
+	require($include_file);
 
 function ensure_path_exists(FilesystemObject $path)
 {
@@ -18,6 +12,10 @@ function ensure_path_exists(FilesystemObject $path)
 }
 
 #make some quick and dirty debug functions
+function config_error(string $text)
+{
+	die("CONFIG ERROR: ".$text." - please check config.json".PHP_EOL);
+}
 function build_error(string $text)
 {
 	die("BUILD ERROR: ".$text.PHP_EOL);

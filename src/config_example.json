@@ -1,9 +1,15 @@
 {
-	"src":{"dir":"./src"},
-	"_acs": {"acc":"~/_dev/gzdoom_build/acc/acc", "dir":"SRC", "pattern":"*.*", "include_src":"false"},
-	"_decorate":{"dir":"actors"},
-	"_zscript": {"dir":"zscript"},
-	"out": {"dir":"./out"},
-	"zip": {"cmd":"7z -mx1 a","dir":"./rel","name":"ProjectBrutality.pk7", "split":true},
-	"debug":"true"
+	"debug":"true",
+	"inputs": [
+		{ "dir":"./src" }
+	],
+	"steps":[
+		{"type":"acs", "settings":{ "acc":"~/_dev/gzdoom_build/acc/acc", "dir":"SRC", "pattern":"*.*", "include_src":"true"} },
+		{"type":"decorate", "settings":{ "dir":"actors"} },
+		{"type":"zscript", "settings":{ "dir":"zscript"} }
+	],
+	"outputs": [
+		{"type":"dir", "settings":{ "path":"./out"} },
+		{"type":"zip", "settings":{ "cmd":"7z -mx1 a","path":"./rel","name":"ProjectBrutality.pk7", "split":"true"} }
+	]
 }
