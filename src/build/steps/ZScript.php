@@ -15,17 +15,28 @@ class ZScriptStep extends Step
 	public function Perform(Folder $input)
 	{
 		$decorate_path = $input->GetSubPath($this->dir->GetPath());
-		$output = new File($this->working_dir->GetPath()."zscript.includes.txt");
-		echo "Generating zscript.includes.txt and adding zscript files from ".$input->GetPath()."...".PHP_EOL;
 
-		$includes = "version ".$this->version.PHP_EOL;
-		foreach($decorate_path->GetContents() as $path)
+		$files = $decorate_path->GetContents();
+
+		if (is_null($files) || count($files) == 0)
 		{
-			#remove src dir from our paths, so that they are relative to the source directory
-			$relative_path = str_replace($input->GetPath(),"",$path);
-			$includes .= '#include "'.$relative_path.'"'.PHP_EOL;
+			echo "no zscript files".PHP_EOL;
 		}
-		$output->Write($includes);
+		else
+		{
+
+			echo "Generating zscript.includes.txt and adding zscript files from ".$decorate_path->GetPath()."...".PHP_EOL;
+			$includes = "version ".$this->version.PHP_EOL;
+			$output = new File($this->working_dir->GetPath()."zscript.includes.txt");
+
+			foreach($files as $path)
+			{
+				#remove src dir from our paths, so that they are relative to the source directory
+				$relative_path = str_replace($input->GetPath(),"",$path);
+				$includes .= '#include "'.$relative_path.'"'.PHP_EOL;
+			}
+			$output->Write($includes);
+		}
 	}
 	
 	public function GetFancyName()

@@ -13,6 +13,7 @@ class DirOutput extends Output
 	public function Generate()
 	{
 		echo "Generating output directory: ".$this->dest->GetPath().PHP_EOL;
+		$this->dest->Delete();
 		$this->dest->Create();
 
 		$this->src->CopyTo($this->dest);

@@ -27,8 +27,8 @@ class Config
 			config_error('no inputs specified');
 		if (!array_key_exists('outputs',$json))
 			config_error('no outputs specified');
-		if (!array_key_exists('steps',$json))
-			config_error('no steps specified');
+		//if (!array_key_exists('steps',$json))
+			//config_error('no steps specified');
 
 		#set top-level values
 		$this->debug = Config::GetArrayKeyOrDefault($json,'debug',false) == "true";
@@ -56,7 +56,12 @@ class Config
 	private function generateStep(array $step)
 	{
 		if (!array_key_exists('type',$step))
-			config_error("step specified with no type");
+		{
+			if (!array_key_exists('_type',$step))
+				config_error("step specified with no type");
+			else
+				return;
+		}
 		if (!array_key_exists('settings',$step))
 			config_error("step of type '".$step['type']."' specified with no settings");
 

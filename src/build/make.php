@@ -35,6 +35,9 @@ foreach($config->GetOutputs() as $output)
 	$output->Generate();
 }
 
+#delete temp dir
+$temp->Delete();
+
 echo "BUILD COMPLETE".PHP_EOL;
 
 ?>

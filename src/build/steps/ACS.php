@@ -25,29 +25,40 @@ class ACSStep extends Step
 
 		$acs_path = $input->GetSubPath($this->dir->GetPath());
 		$acs_error = $acs_path->GetSubPath('acs.err');
-		echo $acs_path->GetPath().PHP_EOL;
-		echo $acs_error->GetPath().PHP_EOL;
-		echo $this->working_dir->GetPath().PHP_EOL;
+		//echo $acs_path->GetPath().PHP_EOL;
+		//echo $acs_error->GetPath().PHP_EOL;
+		//echo $this->working_dir->GetPath().PHP_EOL;
 
 		#remove acs.err if it exists
 		if ($acs_error->Exists())
 			$acs_error->Delete();
 
-		foreach($acs_path->GetContents($this->pattern) as $acs_file)
+		$files = $acs_path->GetContents($this->pattern);
+
+		if (is_null($files) || count($files) == 0)
 		{
-			$cmd = $this->acc->GetPath().' "'.$acs_file.'" "'.$this->working_dir->GetPath().'"';
+			echo "nothing to compile".PHP_EOL;
+		}
+		else
+		{
 
-			echo "Compiling ".$acs_file."...".PHP_EOL;
+			foreach($files as $acs_file)
+			{
+				$filename = pathinfo($acs_file,PATHINFO_FILENAME);
+				$cmd = $this->acc->GetPath().' "'.$acs_file.'" "'.$this->working_dir->GetPath().$filename.'.o'.'"';
 
-			#we need to get rid of the spammy output of ACC
-			if (IsWindows())
-				exec ($cmd . " 1> NUL 2> NUL");
-			else
-				exec ($cmd . " > /dev/null 2> /dev/null");
+				echo "Compiling ".$acs_file."...".PHP_EOL;
 
-			#check for any error files
-			if ($acs_error->Exists())
-				acs_error($acs_error);
+				#we need to get rid of the spammy output of ACC
+				if (IsWindows())
+					exec ($cmd . " 1> NUL 2> NUL");
+				else
+					exec ($cmd . " > /dev/null 2> /dev/null");
+
+				#check for any error files
+				if ($acs_error->Exists())
+					acs_error($acs_error);
+			}
 		}
 	}
 

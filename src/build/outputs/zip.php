@@ -19,6 +19,8 @@ class ZipOutput extends Output
 
 	public function Generate()
 	{
+		echo "Generating output zip: ".$this->output->GetPath().PHP_EOL;
+		$this->dest->Delete();
 		$this->dest->Create();
 		#generate zip - super easy if we aren't using split
 		if (!$this->split)

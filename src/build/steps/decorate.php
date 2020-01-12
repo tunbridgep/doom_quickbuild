@@ -14,17 +14,27 @@ class DecorateStep extends Step
 	public function Perform(Folder $input)
 	{
 		$decorate_path = $input->GetSubPath($this->dir->GetPath());
-		$output = new File($this->working_dir->GetPath()."decorate.includes.txt");
-		echo "Generating decorate.includes.txt and adding decorate files from ".$input->GetPath()."...".PHP_EOL;
 
-		$includes = "";
-		foreach($decorate_path->GetContents() as $path)
+		$files = $decorate_path->GetContents();
+
+		if (is_null($files) || count($files) == 0)
 		{
-			#remove src dir from our paths, so that they are relative to the source directory
-			$relative_path = str_replace($input->GetPath(),"",$path);
-			$includes .= '#include "'.$relative_path.'"'.PHP_EOL;
+			echo "no decorate files".PHP_EOL;
 		}
-		$output->Write($includes);
+		else
+		{
+			echo "Generating decorate.includes.txt and adding decorate files from ".$decorate_path->GetPath()."...".PHP_EOL;
+			$includes = "";
+			$output = new File($this->working_dir->GetPath()."decorate.includes.txt");
+
+			foreach($files as $path)
+			{
+				#remove src dir from our paths, so that they are relative to the source directory
+				$relative_path = str_replace($input->GetPath(),"",$path);
+				$includes .= '#include "'.$relative_path.'"'.PHP_EOL;
+			}
+			$output->Write($includes);
+		}
 	}
 	
 	public function GetFancyName()
