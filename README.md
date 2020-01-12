@@ -1,7 +1,7 @@
 # Doom Quickbuild
 A simple build script for building doom projects into a coherent pk3 file, with ACC compilation, DECORATE/ZSCRIPT index generation, and bundling handled for you.
 
-#Installing
+# Prerequisites
 You need to have PHP available in your path.
 
 On linux, php can be installed with
@@ -12,7 +12,9 @@ On windows, PHP can be downloaded from php.net and installed to anywhere. There 
 
 Once you have PHP installed, just copy the folder structure into your project. That should be the build folder, make.sh and config.json
 
-#Usage
+To be able to create zip archives, you will need to have a zip program (7zip is recommended) available.
+
+# Usage
 
 Copy the build folder (or symlink it) into your project folder, at the root level. You will also need to create config.json, an example can be found in src/config_example.json.
 
