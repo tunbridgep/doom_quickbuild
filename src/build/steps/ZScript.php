@@ -4,12 +4,14 @@ class ZScriptStep extends Step
 {
 	private $dir;
 	private $version;
+	private $out_name;
 
-	public function __construct(Folder $dir, string $version, Folder $working_dir)
+	public function __construct(Folder $dir, string $version, Folder $working_dir, string $out_name)
 	{
 		$this->dir = $dir;
 		$this->version = $version;
 		$this->working_dir = $working_dir;
+		$this->out_name = $out_name;
 	}
 
 	public function Perform(Folder $input)
@@ -25,9 +27,9 @@ class ZScriptStep extends Step
 		else
 		{
 
-			echo "Generating zscript.includes.txt and adding zscript files from ".$decorate_path->GetPath()."...".PHP_EOL;
+			echo "Generating ".$this->out_name." and adding zscript files from ".$decorate_path->GetPath()."...".PHP_EOL;
 			$includes = "version ".$this->version.PHP_EOL;
-			$output = new File($this->working_dir->GetPath()."zscript.includes.txt");
+			$output = new File($this->working_dir->GetPath().$this->out_name);
 
 			foreach($files as $path)
 			{

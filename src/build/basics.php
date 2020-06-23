@@ -20,9 +20,13 @@ function build_error(string $text)
 {
 	die("BUILD ERROR: ".$text.PHP_EOL);
 }
-function acs_error(File $errorfile)
+function acs_error(File $errorfile, bool $delete = false)
 {
-	die("BUILD ERROR: Compilation failed".PHP_EOL."ACS ERROR: ".file_get_contents($errorfile->GetPath()));
+    $error = file_get_contents($errorfile->GetPath());
+    if ($delete)
+        $errorfile->Delete();
+
+	die("BUILD ERROR: Compilation failed".PHP_EOL."ACS ERROR: ".$error);
 }
 function build_error_missing_path(FilesystemObject $path)
 {

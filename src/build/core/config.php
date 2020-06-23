@@ -80,15 +80,18 @@ class Config
 
 				$include_src = Config::GetArrayKeyOrDefault($settings,'include_src',false) == "true";
 				$pattern = Config::GetArrayKeyOrDefault($settings,'pattern',"*.*");
+				$recursive = Config::GetArrayKeyOrDefault($settings,'recursive',true) == "true";
+				$keep_error_file = Config::GetArrayKeyOrDefault($settings,'keep_error_file',false) == "true";
 				$dir = new Folder($settings['dir']);
-				array_push($this->steps,new ACSStep($acc,$dir,$pattern,$include_src,$this->temp_dir));
+				array_push($this->steps,new ACSStep($acc,$dir,$pattern,$include_src,$recursive,$this->temp_dir,$keep_error_file));
 				break;
 			case "decorate":
 				if (!array_key_exists('dir',$settings))
 					config_error("'dir' setting must be present when using a step of type 'decorate'");
 
+   				$outfile = Config::GetArrayKeyOrDefault($settings,'output',"decorate.txt");
 				$dir = new Folder($settings['dir']);
-				array_push($this->steps,new DecorateStep($dir,$this->temp_dir));
+				array_push($this->steps,new DecorateStep($dir,$this->temp_dir,$outfile));
 				break;
 			case "zscript":
 				if (!array_key_exists('dir',$settings))
@@ -96,7 +99,8 @@ class Config
 
 				$dir = new Folder($settings['dir']);
 				$version = Config::GetArrayKeyOrDefault($settings,'version','4.1.3');
-				array_push($this->steps,new ZScriptStep($dir,$version,$this->temp_dir));
+   				$outfile = Config::GetArrayKeyOrDefault($settings,'output',"zscript.txt");
+				array_push($this->steps,new ZScriptStep($dir,$version,$this->temp_dir,$outfile));
 				break;
 			default:
 				config_error("unknown step type '".$step['type']."'");

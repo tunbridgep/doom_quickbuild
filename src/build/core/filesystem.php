@@ -147,10 +147,10 @@ class Folder extends FilesystemObject
 
 	#returns an array containing all children and subchildren etc
 	#optionally we may specify a pattern to filter our contents by
-	public function GetContents(string $pattern = "*")
+	public function GetContents(string $pattern = "*", $recursive = true)
 	{
 		if ($this->Exists())
-			return Folder::rglob($this->path.$pattern);
+			return Folder::rglob($this->path.$pattern,0,$recursive);
 		else
 			return null;
 	}
@@ -169,15 +169,18 @@ class Folder extends FilesystemObject
 		Folder::recursive_copy($this->path,$dest->GetPath());
 	}
 
-	#this recursively globs any folder, making a big array containing all it's children and their children etc
-	private static function rglob($pattern, $flags = 0)
+ 	#this recursively globs any folder, making a big array containing all it's children and their children etc
+	private static function rglob($pattern, $flags = 0, $recurse = true)
 	{
 		$files = array();
 		foreach (glob($pattern, $flags) as $file)
 			if (!is_dir($file))
 				array_push($files,$file);
-		foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir)
-			$files = array_merge($files, Folder::rglob($dir.'/'.basename($pattern), $flags));
+        if ($recurse)
+        {
+		    foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir)
+			    $files = array_merge($files, Folder::rglob($dir.'/'.basename($pattern), $flags));
+		}
 		return $files;
 	}
 

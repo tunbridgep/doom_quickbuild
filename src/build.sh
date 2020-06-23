@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
 php build/make.php

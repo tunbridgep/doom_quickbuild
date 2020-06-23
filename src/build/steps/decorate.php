@@ -3,12 +3,13 @@
 class DecorateStep extends Step
 {
 	private $dir;
+	private $out_name;
 
-	public function __construct(Folder $dir, Folder $working_dir)
+	public function __construct(Folder $dir, Folder $working_dir, string $out_name)
 	{
 		$this->dir = $dir;
-		$decorate_folder = new Folder('decorate');
 		$this->working_dir = $working_dir;
+		$this->out_name = $out_name;
 	}
 
 	public function Perform(Folder $input)
@@ -23,9 +24,9 @@ class DecorateStep extends Step
 		}
 		else
 		{
-			echo "Generating decorate.includes.txt and adding decorate files from ".$decorate_path->GetPath()."...".PHP_EOL;
+			echo "Generating ".$this->out_name." and adding decorate files from ".$decorate_path->GetPath()."...".PHP_EOL;
 			$includes = "";
-			$output = new File($this->working_dir->GetPath()."decorate.includes.txt");
+			$output = new File($this->working_dir->GetPath().$this->out_name);
 
 			foreach($files as $path)
 			{

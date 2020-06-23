@@ -6,14 +6,19 @@ class ACSStep extends Step
 	private $dir;
 	private $pattern;
 	private $include_src;
+	private $recursive;
+	private $keep_error_file;
 
-	public function __construct(File $acc, Folder $dir, string $pattern, bool $include_src, Folder $working_dir)
+	public function __construct(File $acc, Folder $dir, string $pattern, bool $include_src, bool $recursive, Folder $working_dir, bool $keep_error_file)
 	{
+  		$acs_folder = new Folder('acs');
+	
 		$this->acc = $acc;
 		$this->dir = $dir;
 		$this->pattern = $pattern;
 		$this->include_src = $include_src;
-		$acs_folder = new Folder('acs');
+		$this->recursive = $recursive;
+		$this->keep_error_file = $keep_error_file;
 		$this->working_dir = $working_dir->GetSubPath($acs_folder->GetPath());
 	}
 
@@ -30,10 +35,10 @@ class ACSStep extends Step
 		//echo $this->working_dir->GetPath().PHP_EOL;
 
 		#remove acs.err if it exists
-		if ($acs_error->Exists())
+		if ($acs_error->Exists() && !$this->keep_error_file)
 			$acs_error->Delete();
 
-		$files = $acs_path->GetContents($this->pattern);
+		$files = $acs_path->GetContents($this->pattern,$this->recursive);
 
 		if (is_null($files) || count($files) == 0)
 		{
@@ -57,7 +62,7 @@ class ACSStep extends Step
 
 				#check for any error files
 				if ($acs_error->Exists())
-					acs_error($acs_error);
+					acs_error($acs_error,!$this->keep_error_file);
 			}
 		}
 	}
