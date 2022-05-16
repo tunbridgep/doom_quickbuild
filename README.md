@@ -46,9 +46,9 @@ ACS Steps have the following syntax:
 
 An ACS Step will automatically compile all acs script files in the directory specified by "dir", determined by a pattern set by "pattern". It is generally a good idea to use *.* or * as your pattern, unless you are doing something very specific. Setting "include_src" to anything other than true will exclude all original ACS source files from every output. The ACS step will automatically compile every script, stopping if any errors occur during compilation, and all compiled output files will be available to each output.
 
-Optionally, ACS steps may be specified without the acc parameter, which will allow quickbuild to use the version of acc installed in the `build/acc` folder. You will need to provide your own version of ACC, downloadable from [zdoom.org](zdoom.org)
-
     {"type":"acs", "settings":{ "dir":"SRC", "pattern":"*.*", "include_src":"true"} }
+
+Optionally, ACS steps may be specified without the acc parameter, which will allow quickbuild to use the version of acc installed in the `build/acc` folder. You will need to provide your own version of ACC, downloadable from [zdoom.org](zdoom.org)
 
 Decorate Steps have the following syntax
 
