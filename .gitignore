@@ -1,3 +1,4 @@
 generate_readme.sh
 *.swp
 readme.html
+src/build/acc/

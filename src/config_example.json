@@ -4,7 +4,10 @@
 		{ "dir":"./src" }
 	],
 	"steps":[
+		#you can specify ACC manually
 		{"type":"acs", "settings":{ "acc":"~/_dev/gzdoom_build/acc/acc", "dir":"SRC", "pattern":"*.*", "include_src":"true"} },
+		#or omit it entirely
+		{"type":"acs", "settings":{ "dir":"SRC", "pattern":"*.*", "include_src":"true"} },
 		{"type":"decorate", "settings":{ "dir":"actors"} },
 		{"type":"zscript", "settings":{ "dir":"zscript"} }
 	],

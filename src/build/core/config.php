@@ -68,13 +68,29 @@ class Config
 		$settings = $step['settings'];
 		switch($step['type'])
 		{
-			case "acs":
+			case "acs":			
 				if (!array_key_exists('dir',$settings))
 					config_error("'dir' setting must be present when using a step of type 'acs'");
-				if (!array_key_exists('acc',$settings))
-					config_error("'acc' setting must be present when using a step of type 'acs'");
-
-				$acc = new File($settings['acc']);
+				
+				if (array_key_exists('acc',$settings))
+				{
+					$acc_location = $settings['acc'];
+				}
+				#acc not present in config file, check for default location
+				else if (file_exists("build/acc/acc.exe"))
+				{
+					$acc_location = "build/acc/acc.exe";
+				}
+				else if (file_exists("build/acc/acc"))
+				{
+					$acc_location = "build/acc/acc";
+				}
+				else
+				{
+					config_error("acc must exist in default location build/acc or 'acc' setting must be present when using a step of type 'acs'");
+				}
+				
+				$acc = new File($acc_location);
 				if (!$acc->Exists())
 					config_error("'acc' refers to a location that does not exist (".$acc->GetPath().")");
 
