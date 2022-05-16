@@ -32,6 +32,7 @@ class DecorateStep extends Step
 			{
 				#remove src dir from our paths, so that they are relative to the source directory
 				$relative_path = str_replace($input->GetPath(),"",$path);
+				$relative_path = str_replace("\\","/",$relative_path);
 				$includes .= '#include "'.$relative_path.'"'.PHP_EOL;
 			}
 			$output->Write($includes);

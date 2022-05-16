@@ -179,7 +179,7 @@ class Folder extends FilesystemObject
         if ($recurse)
         {
 		    foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir)
-			    $files = array_merge($files, Folder::rglob($dir.'/'.basename($pattern), $flags));
+			    $files = array_merge($files, Folder::rglob($dir.DIRECTORY_SEPARATOR.basename($pattern), $flags));
 		}
 		return $files;
 	}
@@ -191,7 +191,7 @@ class Folder extends FilesystemObject
 		$files = array_diff(scandir($dir), array('.','..'));
 		foreach ($files as $file)
 		{
-			is_dir("$dir/$file") ? Folder::recursive_delete("$dir/$file") : unlink("$dir/$file");
+			is_dir("$dir".DIRECTORY_SEPARATOR."$file") ? Folder::recursive_delete("$dir".DIRECTORY_SEPARATOR."$file") : unlink("$dir".DIRECTORY_SEPARATOR."$file");
 		}
 		return rmdir($dir);
 	}
@@ -205,10 +205,10 @@ class Folder extends FilesystemObject
 		{ 
 			if (( $file != '.' ) && ( $file != '..' ))
 			{ 
-				if ( is_dir($src . '/' . $file) )
-					Folder::recursive_copy($src . '/' . $file,$dst . '/' . $file); 
+				if ( is_dir($src . DIRECTORY_SEPARATOR . $file) )
+					Folder::recursive_copy($src . DIRECTORY_SEPARATOR . $file,$dst . DIRECTORY_SEPARATOR . $file); 
 				else
-					copy($src . '/' . $file,$dst . '/' . $file); 
+					copy($src . DIRECTORY_SEPARATOR . $file,$dst . DIRECTORY_SEPARATOR . $file); 
 			} 
 		} 
 		closedir($dir); 
