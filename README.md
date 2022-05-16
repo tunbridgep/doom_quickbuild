@@ -60,7 +60,7 @@ ZScript steps have a very similar syntax, with one additional parameter
 
 In both cases, the contents of directory "dir" will be scanned, and an index file will be generated, which includes #include statements for every file found within the directory, including subdirectories. In zscript, the zscript version will also be made available at the top of the index file, or the default version of 4.1.3 will be used if no version is specified.
 
-the files decorate.includes.txt and zscript.incluces.txt will be created and made available to all outputs.
+the files decorate.includes.txt and zscript.includes.txt will be created and made available to all outputs.
 
 All steps can be specified multiple times, if multiple directories are required.
 
