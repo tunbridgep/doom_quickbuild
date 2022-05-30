@@ -46,9 +46,9 @@ ACS Steps have the following syntax:
 
 An ACS Step will automatically compile all acs script files in the directory specified by "dir", determined by a pattern set by "pattern". It is generally a good idea to use *.* or * as your pattern, unless you are doing something very specific. Setting "include_src" to anything other than true will exclude all original ACS source files from every output. The ACS step will automatically compile every script, stopping if any errors occur during compilation, and all compiled output files will be available to each output.
 
-Optionally, ACS steps may be specified without the acc parameter, which will allow quickbuild to use the version of acc installed in the `build/acc` folder. You will need to provide your own version of ACC, downloadable from [zdoom.org](zdoom.org)
-
     {"type":"acs", "settings":{ "dir":"SRC", "pattern":"*.*", "include_src":"true"} }
+
+Optionally, ACS steps may be specified without the acc parameter, which will allow quickbuild to use the version of acc installed in the `build/acc` folder. You will need to provide your own version of ACC, downloadable from [zdoom.org](zdoom.org)
 
 Decorate Steps have the following syntax
 
@@ -60,7 +60,7 @@ ZScript steps have a very similar syntax, with one additional parameter
 
 In both cases, the contents of directory "dir" will be scanned, and an index file will be generated, which includes #include statements for every file found within the directory, including subdirectories. In zscript, the zscript version will also be made available at the top of the index file, or the default version of 4.1.3 will be used if no version is specified.
 
-the files decorate.includes.txt and zscript.indluces.txt will be created and made available to all outputs.
+the files decorate.includes.txt and zscript.includes.txt will be created and made available to all outputs.
 
 All steps can be specified multiple times, if multiple directories are required.
 
