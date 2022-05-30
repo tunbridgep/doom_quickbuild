@@ -26,7 +26,7 @@ foreach($config->GetInputs() as $input)
 
 	#we have processed our input. Copy it over to the temp folder
 	echo "Copying files from ".$input->GetPath()." to ".$temp->GetPath().PHP_EOL;
-	$input->CopyTo($temp);
+	$input->CopyTo($temp,array('.git'));
 }
 
 #everything is done, run out outputs

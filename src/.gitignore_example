@@ -1,0 +1,5 @@
+build
+rel/*
+out/*
+build.sh
+build.cmd

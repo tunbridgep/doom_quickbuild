@@ -163,10 +163,10 @@ class Folder extends FilesystemObject
 			$sub = new File($this->GetPath().DIRECTORY_SEPARATOR.$name);
 		return $sub;
 	}
-
-	public function CopyTo(Folder $dest)
+	
+	public function CopyTo(Folder $dest,array $excludes = null)
 	{
-		Folder::recursive_copy($this->path,$dest->GetPath());
+		Folder::recursive_copy($this->path,$dest->GetPath(),$excludes);
 	}
 
  	#this recursively globs any folder, making a big array containing all it's children and their children etc
@@ -197,18 +197,22 @@ class Folder extends FilesystemObject
 	}
 
 	#recursive copy function, which will copy everything from src to dest (and all children)
-	private static function recursive_copy(string $src,string $dst)
+	private static function recursive_copy(string $src,string $dst,array $excludes = null)
 	{ 
 		$dir = opendir($src); 
 		@mkdir($dst); 
 		while(false !== ( $file = readdir($dir)) )
 		{ 
 			if (( $file != '.' ) && ( $file != '..' ))
-			{ 
-				if ( is_dir($src . DIRECTORY_SEPARATOR . $file) )
-					Folder::recursive_copy($src . DIRECTORY_SEPARATOR . $file,$dst . DIRECTORY_SEPARATOR . $file); 
+			{
+				$path = $src . DIRECTORY_SEPARATOR . $file;
+				
+				if (is_array($excludes) && in_array($file,$excludes))
+					continue;
+				else if ( is_dir($path) )
+					Folder::recursive_copy($path,$dst . DIRECTORY_SEPARATOR . $file); 
 				else
-					copy($src . DIRECTORY_SEPARATOR . $file,$dst . DIRECTORY_SEPARATOR . $file); 
+					copy($path,$dst . DIRECTORY_SEPARATOR . $file); 
 			} 
 		} 
 		closedir($dir); 
