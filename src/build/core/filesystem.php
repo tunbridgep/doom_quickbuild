@@ -22,14 +22,6 @@ abstract class FilesystemObject
 		while(strpos($path, DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR) !== false)
 			$path = str_replace(DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR,DIRECTORY_SEPARATOR,$path);
 
-		#PHP is silly and file_exists doesn't work properly when we have paths starting with "~/"
-		#so we need to fix it
-		if (strpos($path,"~/") == 0)
-		{
-			$home = $_SERVER['HOME'].DIRECTORY_SEPARATOR;
-			$path = str_replace("~/",$home,$path);
-		}
-
 		$this->path = $path;
 	}
 
@@ -106,7 +98,8 @@ class File extends FilesystemObject
 
 	public function CopyTo(Folder $dest)
 	{
-		copy($this->path,$dest->GetPath().$this->GetName());
+		$source_file_contents = file_get_contents($this->GetPath());
+		file_put_contents($dest->GetPath().$this->GetName(),$source_file_contents,FILE_APPEND);
 	}
 
 	public function Delete()
@@ -212,7 +205,7 @@ class Folder extends FilesystemObject
 				else if ( is_dir($path) )
 					Folder::recursive_copy($path,$dst . DIRECTORY_SEPARATOR . $file); 
 				else
-					copy($path,$dst . DIRECTORY_SEPARATOR . $file); 
+					file_put_contents($dst.DIRECTORY_SEPARATOR.$file,file_get_contents($path),FILE_APPEND);
 			} 
 		} 
 		closedir($dir); 
