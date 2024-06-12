@@ -20,11 +20,11 @@ class ZipOutput extends Output
 	public function Generate()
 	{
 		echo "Generating output zip: ".$this->output->GetPath().PHP_EOL;
-		$this->dest->Delete();
-		$this->dest->Create();
 		#generate zip - super easy if we aren't using split
 		if (!$this->split)
 		{
+			$this->output->Delete();
+			$this->dest->Create();
 			$cmd = $this->cmd.' "'.$this->output->GetPath().'" "'.$this->src->GetPath().'*"';
 			#echo "Running zip command: ".$cmd.PHP_EOL;
 			#die();
@@ -32,6 +32,8 @@ class ZipOutput extends Output
 		}
 		else #we have to do it manually! We need to zip everything except the big folders
 		{
+			$this->dest->Delete();
+			$this->dest->Create();
 			$gameinfo = "";
 			$hires = false;
 			
